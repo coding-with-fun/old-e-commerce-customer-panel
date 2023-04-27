@@ -1,7 +1,25 @@
-import React from 'react';
+import { signIn } from 'next-auth/react';
+import Head from 'next/head';
+import React, { Fragment } from 'react';
 
 const SignIn = () => {
-    return <div>SignIn</div>;
+    return (
+        <Fragment>
+            <Head>
+                <title>Sign In</title>
+            </Head>
+
+            <div className="px-5">
+                <button
+                    onClick={() => {
+                        signIn('github');
+                    }}
+                >
+                    Sign In
+                </button>
+            </div>
+        </Fragment>
+    );
 };
 
 export default SignIn;

@@ -1,6 +1,11 @@
 const env = {
     apiUrl: process.env.NEXT_PUBLIC_BASE_URL as string,
 
+    github: {
+        clientId: getOsEnv('GITHUB_CLIENT_ID'),
+        clientSecret: getOsEnv('GITHUB_CLIENT_SECRET'),
+    },
+
     db: {
         uri: getOsEnv('MONGOOSE_URI'),
     },
