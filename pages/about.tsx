@@ -1,7 +1,16 @@
-import React from 'react';
+import Head from 'next/head';
+import React, { Fragment } from 'react';
 
 const About = () => {
-    return <div>About</div>;
+    return (
+        <Fragment>
+            <Head>
+                <title>About</title>
+            </Head>
+
+            <div>About</div>
+        </Fragment>
+    );
 };
 
 export default About;

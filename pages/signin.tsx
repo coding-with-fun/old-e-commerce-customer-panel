@@ -1,3 +1,4 @@
+import withoutAuth from '@/HOC/withoutAuth';
 import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import React, { Fragment } from 'react';
@@ -22,4 +23,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default withoutAuth(SignIn);

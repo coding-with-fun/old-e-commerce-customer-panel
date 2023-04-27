@@ -1,7 +1,17 @@
-import React from 'react';
+import withAuth from '@/HOC/withAuth';
+import Head from 'next/head';
+import React, { Fragment } from 'react';
 
 const Profile = () => {
-    return <div>Profile</div>;
+    return (
+        <Fragment>
+            <Head>
+                <title>Profile</title>
+            </Head>
+
+            <div>Profile</div>
+        </Fragment>
+    );
 };
 
-export default Profile;
+export default withAuth(Profile);
