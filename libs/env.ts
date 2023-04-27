@@ -1,15 +1,17 @@
 const env = {
+    apiUrl: process.env.NEXT_PUBLIC_BASE_URL as string,
+
     db: {
-        uri: getOsEnvOptional('MONGOOSE_URI'),
+        uri: getOsEnv('MONGOOSE_URI'),
     },
 };
 
 export default env;
 
 export function getOsEnv(key: string): string {
-    if (typeof process.env[key] === 'undefined') {
-        throw new Error(`Environment variable ${key} is not set.`);
-    }
+    // if (typeof process.env[key] === 'undefined') {
+    //     throw new Error(`Environment variable ${key} is not set.`);
+    // }
 
     return process.env[key] as string;
 }
