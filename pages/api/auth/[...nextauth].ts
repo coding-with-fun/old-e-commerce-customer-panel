@@ -12,6 +12,7 @@ export const authOptions: NextAuthOptions = {
         GithubProvider({
             clientId: env.github.clientId,
             clientSecret: env.github.clientSecret,
+            authorization: 'http://localhost:3000/verify-user',
         }),
         CredentialsProvider({
             name: 'Credentials',

@@ -1,16 +1,16 @@
-import { useFormik } from 'formik';
-import { toFormikValidationSchema } from 'zod-formik-adapter';
 import withoutAuth from '@/HOC/withoutAuth';
+import PasswordInput from '@/components/PasswordInput';
 import env from '@/libs/env';
+import toast from '@/libs/toast';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
+import { useFormik } from 'formik';
 import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
 import { SignInFormSchema } from './schema';
-import PasswordInput from '@/components/PasswordInput';
-import toast from '@/libs/toast';
 
 const SignIn = () => {
     const formik = useFormik({
@@ -21,14 +21,18 @@ const SignIn = () => {
         validationSchema: toFormikValidationSchema(SignInFormSchema),
         onSubmit: async (values) => {
             const status = await signIn('credentials', {
-                redirect: false,
+                redirect: true,
                 email: values.email,
                 password: values.password,
-                callbackUrl: '/',
+                callbackUrl: '/verify-user',
             });
 
-            if (status && !status.ok && status.error) {
-                toast(status.error);
+            console.log(status);
+
+            if (status) {
+                if (!status.ok && status.error) {
+                    toast(status.error);
+                }
             }
         },
     });
