@@ -3,7 +3,11 @@
     "ignorePaths": [],
     "dictionaryDefinitions": [],
     "dictionaries": [],
-    "words": ["Parens", "tailwindcss"],
+    "words": [
+        "NEXTAUTH",
+        "Parens",
+        "tailwindcss"
+    ],
     "ignoreWords": [],
     "import": []
 }

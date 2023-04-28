@@ -2,8 +2,6 @@ import env from '@/libs/env';
 import mongoose from 'mongoose';
 
 const connectMongo = async () => {
-    console.log({ uri: env.db.uri });
-
     const { connection } = await mongoose.connect(env.db.uri, {
         dbName: 'next-auth',
     });

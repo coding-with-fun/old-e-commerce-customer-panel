@@ -1,5 +1,6 @@
 const env = {
     apiUrl: process.env.NEXT_PUBLIC_BASE_URL as string,
+    authUrl: process.env.NEXTAUTH_URL as string,
 
     github: {
         clientId: getOsEnv('GITHUB_CLIENT_ID'),

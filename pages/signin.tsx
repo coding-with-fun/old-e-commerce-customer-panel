@@ -1,9 +1,16 @@
 import withoutAuth from '@/HOC/withoutAuth';
+import env from '@/libs/env';
 import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import React, { Fragment } from 'react';
 
 const SignIn = () => {
+    const handleGitHubSignIn = () => {
+        signIn('github', {
+            callbackUrl: env.authUrl,
+        });
+    };
+
     return (
         <Fragment>
             <Head>
@@ -11,13 +18,7 @@ const SignIn = () => {
             </Head>
 
             <div className="px-5">
-                <button
-                    onClick={() => {
-                        signIn('github');
-                    }}
-                >
-                    Sign In
-                </button>
+                <button onClick={handleGitHubSignIn}>Sign In</button>
             </div>
         </Fragment>
     );
