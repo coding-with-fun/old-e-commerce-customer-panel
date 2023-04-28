@@ -12,7 +12,6 @@ export const authOptions: NextAuthOptions = {
         GithubProvider({
             clientId: env.github.clientId,
             clientSecret: env.github.clientSecret,
-            authorization: 'http://localhost:3000/verify-user',
         }),
         CredentialsProvider({
             name: 'Credentials',
@@ -36,15 +35,33 @@ export const authOptions: NextAuthOptions = {
 
                 return {
                     email,
-                    _id: customer._id,
-                    id: customer._id,
+                    name: customer.name,
+                    id: customer._id.toString(),
                 };
             },
         }),
     ],
-    secret: 'XH6bp/TkLvnUkQiPDEZNyHc0CV+VV5RL/n+HdVHoHN0=',
+    secret: env.authSecret,
     session: {
         strategy: 'jwt',
+    },
+    debug: true,
+    callbacks: {
+        async jwt({ token, user }) {
+            return { ...token, ...user };
+        },
+
+        async session({ session, token }) {
+            return {
+                ...session,
+                user: {
+                    // ...token,
+                    email: token.email,
+                    id: token.id,
+                    name: token.name,
+                },
+            };
+        },
     },
 };
 
