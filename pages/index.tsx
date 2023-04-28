@@ -1,4 +1,7 @@
 import env from '@/libs/env';
+import { Button } from '@mui/material';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography';
 import Head from 'next/head';
 import { Fragment, useEffect } from 'react';
 
@@ -21,9 +24,11 @@ const Home = () => {
                 <title>Home</title>
             </Head>
 
-            <div>
-                <p>Home</p>
-            </div>
+            <Box>
+                <Typography>Home</Typography>
+
+                <Button variant="outlined">Home</Button>
+            </Box>
         </Fragment>
     );
 };

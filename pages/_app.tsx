@@ -1,28 +1,45 @@
+import Outlet from '@/HOC/Outlet';
 import Navbar from '@/components/Navbar';
 import '@/styles/globals.css';
-import { SessionProvider } from 'next-auth/react';
-
-import Outlet from '@/HOC/Outlet';
+import createEmotionCache from '@/utils/createEmotionCache';
+import theme from '@/utils/theme';
+import { CacheProvider, EmotionCache } from '@emotion/react';
+import { CssBaseline, ThemeProvider } from '@mui/material';
 import type { Session } from 'next-auth';
+import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
+
+const clientSideEmotionCache = createEmotionCache();
+
+interface MyAppProps
+    extends AppProps<{
+        session: Session;
+    }> {
+    emotionCache: EmotionCache;
+}
 
 export default function App({
     Component,
+    emotionCache = clientSideEmotionCache,
     pageProps: { session, ...pageProps },
-}: AppProps<{
-    session: Session;
-}>) {
+}: MyAppProps) {
     return (
-        <SessionProvider session={session} refetchOnWindowFocus={false}>
-            <Outlet>
-                <div className="h-screen">
-                    <Navbar />
+        <CacheProvider value={emotionCache}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
 
-                    <main>
-                        <Component {...pageProps} />
-                    </main>
-                </div>
-            </Outlet>
-        </SessionProvider>
+                <SessionProvider session={session} refetchOnWindowFocus={false}>
+                    <Outlet>
+                        <div className="h-screen">
+                            <Navbar />
+
+                            <main>
+                                <Component {...pageProps} />
+                            </main>
+                        </div>
+                    </Outlet>
+                </SessionProvider>
+            </ThemeProvider>
+        </CacheProvider>
     );
 }
