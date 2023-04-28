@@ -10,6 +10,7 @@ import Link from 'next/link';
 import React, { Fragment } from 'react';
 import { SignInFormSchema } from './schema';
 import PasswordInput from '@/components/PasswordInput';
+import toast from '@/libs/toast';
 
 const SignIn = () => {
     const formik = useFormik({
@@ -18,26 +19,23 @@ const SignIn = () => {
             password: '',
         },
         validationSchema: toFormikValidationSchema(SignInFormSchema),
-        onSubmit: async (values) => {},
+        onSubmit: async (values) => {
+            const status = await signIn('credentials', {
+                redirect: false,
+                email: values.email,
+                password: values.password,
+                callbackUrl: '/',
+            });
+
+            if (status && !status.ok && status.error) {
+                toast(status.error);
+            }
+        },
     });
 
     const handleGitHubSignIn = () => {
         signIn('github', {
             callbackUrl: env.authUrl,
-        });
-    };
-
-    const handleSignIn = async (event: React.FormEvent<HTMLFormElement>) => {
-        event.preventDefault();
-
-        const status = await signIn('credentials', {
-            redirect: false,
-            email: 'dev@harrsh.com',
-            password: 'Abcd@1234',
-            callbackUrl: '/',
-        });
-        console.log({
-            status,
         });
     };
 
@@ -109,35 +107,35 @@ const SignIn = () => {
                     >
                         Sign In
                     </Button>
+                </Box>
 
-                    <Grid container>
-                        <Grid item xs>
-                            <Typography variant="body2">
-                                <Link href="/forgot-password">
-                                    Forgot password?
-                                </Link>
-                            </Typography>
-                        </Grid>
-
-                        <Grid item>
-                            <Typography variant="body2">
-                                <Link href="/signup">
-                                    {"Don't have an account? Sign Up"}
-                                </Link>
-                            </Typography>
-                        </Grid>
+                <Grid container>
+                    <Grid item xs>
+                        <Typography variant="body2">
+                            <Link href="/forgot-password">
+                                Forgot password?
+                            </Link>
+                        </Typography>
                     </Grid>
 
-                    <Button
-                        variant="contained"
-                        className="mt-6 text-white bg-black hover:text-black hover:bg-white"
-                        fullWidth
-                        startIcon={<GitHubIcon />}
-                        onClick={handleGitHubSignIn}
-                    >
-                        Sign In with GitHub
-                    </Button>
-                </Box>
+                    <Grid item>
+                        <Typography variant="body2">
+                            <Link href="/signup">
+                                {"Don't have an account? Sign Up"}
+                            </Link>
+                        </Typography>
+                    </Grid>
+                </Grid>
+
+                <Button
+                    variant="contained"
+                    className="mt-6 text-white bg-black hover:text-black hover:bg-white"
+                    fullWidth
+                    startIcon={<GitHubIcon />}
+                    onClick={handleGitHubSignIn}
+                >
+                    Sign In with GitHub
+                </Button>
             </Box>
         </Fragment>
     );

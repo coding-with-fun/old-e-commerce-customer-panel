@@ -42,7 +42,7 @@ export interface ICustomerSchema extends Document {
     updatedAt: Date;
 }
 
-export type AdminDataType = Document<
+export type CustomerDataType = Document<
     unknown,
     Record<string, unknown>,
     ICustomerSchema

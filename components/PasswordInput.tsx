@@ -63,7 +63,7 @@ const PasswordInput = (props: PropsType): JSX.Element => {
                 label="Password"
                 {...props}
             />
-            {props.inputerror.error === true ? (
+            {props.inputerror.error === true && props.inputerror.helperText ? (
                 <FormHelperText
                     id="outlined-weight-helper-text"
                     error={props.inputerror.error}

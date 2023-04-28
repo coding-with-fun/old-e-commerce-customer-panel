@@ -8,10 +8,6 @@ export const SignInFormSchema = z.object({
         })
         .nonempty('Email address is required.')
         .email('Invalid email address.'),
-    name: z.string({
-        required_error: 'Name is required.',
-        invalid_type_error: 'Name is required.',
-    }),
     password: z
         .string({
             required_error: 'Password is required.',

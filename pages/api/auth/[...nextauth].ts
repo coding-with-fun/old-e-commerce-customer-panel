@@ -1,6 +1,7 @@
 import connectMongo from '@/database/conn';
 import env from '@/libs/env';
-import Customer from '@/schemas/customer.schema';
+import Customer, { CustomerDataType } from '@/schemas/customer.schema';
+import { comparePassword } from '@/utils/managePassword';
 import _ from 'lodash';
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
@@ -20,11 +21,16 @@ export const authOptions: NextAuthOptions = {
                 const email = _.get(credentials, 'email', '');
                 const password = _.get(credentials, 'password', '');
 
-                const customer = await Customer.findOne({
-                    email,
-                });
+                const customer: CustomerDataType | null =
+                    await Customer.findOne({
+                        email,
+                    });
                 if (!customer) {
                     throw new Error('Customer does not exist.');
+                }
+
+                if (!(await comparePassword(password, customer.password))) {
+                    throw new Error('Password does not match.');
                 }
 
                 return {
