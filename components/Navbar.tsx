@@ -1,4 +1,5 @@
 import env from '@/libs/env';
+import interceptor from '@/utils/interceptor';
 import { signOut, useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { useEffect } from 'react';
@@ -7,10 +8,10 @@ const Navbar = () => {
     const { status } = useSession();
 
     const initAPI = async () => {
-        const data = await fetch(`${env.apiUrl}/hello`);
+        const data = await interceptor.get('/hello');
 
         console.log({
-            data: await data.json(),
+            data: data.data,
         });
     };
 
