@@ -9,6 +9,7 @@ import type { Session } from 'next-auth';
 import { SessionProvider } from 'next-auth/react';
 import type { AppProps } from 'next/app';
 
+// Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
 
 interface MyAppProps
@@ -30,10 +31,10 @@ export default function App({
 
                 <SessionProvider session={session} refetchOnWindowFocus={false}>
                     <Outlet>
-                        <div className="h-screen">
+                        <div className="h-screen flex flex-col">
                             <Navbar />
 
-                            <main>
+                            <main className="flex-1">
                                 <Component {...pageProps} />
                             </main>
                         </div>
