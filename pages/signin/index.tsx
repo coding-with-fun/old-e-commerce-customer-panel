@@ -1,3 +1,5 @@
+import { useFormik } from 'formik';
+import { toFormikValidationSchema } from 'zod-formik-adapter';
 import withoutAuth from '@/HOC/withoutAuth';
 import env from '@/libs/env';
 import GitHubIcon from '@mui/icons-material/GitHub';
@@ -6,8 +8,19 @@ import { signIn } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
+import { SignInFormSchema } from './schema';
+import PasswordInput from '@/components/PasswordInput';
 
 const SignIn = () => {
+    const formik = useFormik({
+        initialValues: {
+            email: '',
+            password: '',
+        },
+        validationSchema: toFormikValidationSchema(SignInFormSchema),
+        onSubmit: async (values) => {},
+    });
+
     const handleGitHubSignIn = () => {
         signIn('github', {
             callbackUrl: env.authUrl,
@@ -45,39 +58,54 @@ const SignIn = () => {
                 </Typography>
 
                 <Box
-                    component="form"
-                    onSubmit={handleSignIn}
                     noValidate
+                    component="form"
+                    autoComplete="off"
+                    onSubmit={formik.handleSubmit}
                     sx={{
                         mt: 1,
                     }}
                 >
                     <TextField
-                        margin="normal"
-                        required
                         fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
                         autoFocus
+                        id="email"
+                        label="Email"
+                        variant="outlined"
+                        margin="dense"
+                        value={formik.values.email}
+                        onChange={formik.handleChange}
+                        error={
+                            formik.touched.email === true &&
+                            Boolean(formik.errors.email)
+                        }
+                        helperText={
+                            formik.touched.email === true && formik.errors.email
+                        }
                     />
-                    <TextField
-                        margin="normal"
-                        required
+
+                    <PasswordInput
                         fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
                         id="password"
-                        autoComplete="current-password"
+                        label="Password"
+                        margin="dense"
+                        value={formik.values.password}
+                        onChange={formik.handleChange}
+                        inputerror={{
+                            error: formik.touched.password,
+                            helperText: formik.errors.password,
+                        }}
                     />
 
                     <Button
-                        type="submit"
                         fullWidth
+                        color="primary"
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
+                        type="submit"
+                        sx={{
+                            mt: 3,
+                            mb: 2,
+                        }}
                     >
                         Sign In
                     </Button>

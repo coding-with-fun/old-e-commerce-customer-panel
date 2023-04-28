@@ -14,13 +14,7 @@ export const authOptions: NextAuthOptions = {
         }),
         CredentialsProvider({
             name: 'Credentials',
-            credentials: {
-                email: {
-                    label: 'email',
-                    type: 'text',
-                },
-                password: { label: 'Password', type: 'password' },
-            },
+            credentials: {},
             authorize: async (credentials) => {
                 await connectMongo();
                 const email = _.get(credentials, 'email', '');
@@ -35,7 +29,7 @@ export const authOptions: NextAuthOptions = {
 
                 return {
                     email,
-                    password,
+                    _id: customer._id,
                     id: customer._id,
                 };
             },
