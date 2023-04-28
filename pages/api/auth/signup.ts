@@ -1,31 +1,23 @@
 import connectMongo from '@/database/conn';
-import _ from 'lodash';
+import response from '@/libs/response';
+import requestValidator from '@/middlewares/requestValidator';
 import mongoose from 'mongoose';
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { z } from 'zod';
 
 const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     try {
-        const data = schema.safeParse(req);
-
-        if (!data.success) {
-            const message = _.get(
-                data,
-                'error.issues[0].message',
-                'Something went wrong.'
-            );
-            throw new Error(message);
-        }
+        const parsedData = await requestValidator(req, res, schema);
+        console.log(parsedData);
 
         await connectMongo();
 
-        return res.status(200).json({ name: 'John Doe' });
-    } catch (error) {
-        const message = _.get(error, 'message', 'Something went wrong...');
-
-        return res.json({
-            name: message,
+        return response(res, {
+            name: 'John Doe',
+            message: 'Customer signed up successfully.',
         });
+    } catch (error) {
+        return response(res, null, error);
     } finally {
         await mongoose.disconnect();
     }
