@@ -12,8 +12,14 @@ export default async function handler(
     res: NextApiResponse<Data>
 ) {
     try {
-        await connectMongo().catch(() => {
-            throw new Error('MongoDB not connected...');
+        await connectMongo().catch((error) => {
+            let message = 'MongoDB not connected...';
+            if (error instanceof Error) {
+                message = error.message;
+            }
+            console.log(message);
+
+            throw new Error(message);
         });
 
         return res.status(200).json({ name: 'John Doe' });

@@ -7,7 +7,7 @@ const env = {
     },
 
     db: {
-        uri: getOsEnv('MONGOOSE_URI'),
+        uri: process.env.MONGOOSE_URI as string,
     },
 };
 
