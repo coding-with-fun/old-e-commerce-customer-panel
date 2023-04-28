@@ -1,10 +1,9 @@
 import _ from 'lodash';
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import { type AnyZodObject, type ZodEffects } from 'zod';
 
 const requestValidator = async (
     req: NextApiRequest,
-    res: NextApiResponse,
     schema: ZodEffects<AnyZodObject> | AnyZodObject
 ) => {
     try {
