@@ -2,10 +2,12 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import withoutAuth from '@/HOC/withoutAuth';
 import env from '@/libs/env';
 import { Box, Button, Grid, TextField, Typography } from '@mui/material';
-import { signIn } from 'next-auth/react';
+import { getProviders, signIn } from 'next-auth/react';
 import Head from 'next/head';
 import Link from 'next/link';
 import React, { Fragment } from 'react';
+import { GetServerSideProps } from 'next';
+import { getToken } from 'next-auth/jwt';
 
 const SignIn = () => {
     const handleGitHubSignIn = () => {
@@ -19,8 +21,8 @@ const SignIn = () => {
 
         const status = await signIn('credentials', {
             redirect: false,
-            email: 'values.email',
-            password: 'values.password',
+            email: 'dev@harrsh.com',
+            password: 'Abcd@1234',
             callbackUrl: '/',
         });
         console.log({
@@ -116,3 +118,24 @@ const SignIn = () => {
 };
 
 export default withoutAuth(SignIn);
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+    const { query, req, res } = context;
+    var error: string | string[] | undefined = '';
+    if (Boolean(query.error)) {
+        error = query.error;
+    }
+
+    try {
+        const secret = process.env.NEXTAUTH_SECRET;
+        const token = await getToken({ req, secret });
+
+        return {
+            props: { providers: await getProviders(), loginError: error },
+        };
+    } catch (e) {
+        return {
+            props: { providers: await getProviders(), loginError: error },
+        };
+    }
+};

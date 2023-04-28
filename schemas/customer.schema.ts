@@ -1,4 +1,4 @@
-import mongoose, { type Document, type ObjectId, model } from 'mongoose';
+import mongoose, { type Document, type ObjectId } from 'mongoose';
 
 const { Schema } = mongoose;
 
@@ -27,7 +27,9 @@ const customerSchema = new Schema<ICustomerSchema>(
     }
 );
 
-const Customer = model<ICustomerSchema>('Customer', customerSchema);
+const Customer =
+    mongoose.models.Customer ||
+    mongoose.model<ICustomerSchema>('Customer', customerSchema);
 
 export default Customer;
 
